@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101510">
+  <title>Verso — digite no ritmo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../outputs/style.css">
+  <script src="mock-yt.js"></script>
+  <script src="../outputs/script.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Verso, início"><span class="brand-mark">v</span><span>verso<span class="brand-dot">.</span></span></a>
+    <div class="top-note"><span class="status-dot"></span> TREINO DE DIGITAÇÃO COM MÚSICA</div>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Alternar tema"><span class="theme-icon">◐</span><span id="theme-label" class="theme-label">Tema claro</span></button>
+  </header>
+  <main class="shell">
+    <section class="intro"><div class="eyebrow"><span>01</span><span class="eyebrow-line"></span> TREINE NO SEU RITMO</div><h1>Digite a letra.<br><em>A música acompanha.</em></h1><p class="intro-copy">Escolha um clipe, carregue as legendas e digite cada linha para manter a música tocando.</p></section>
+    <section class="workspace" aria-label="Configuração do vídeo e legendas">
+      <div class="step-heading"><div class="step-number">1</div><div><h2>Escolha uma música</h2><p>Cole o link ou o ID do vídeo do YouTube.</p></div></div>
+      <form id="video-form"><label class="sr-only" for="video-url">Link ou ID do YouTube</label><div class="input-wrap"><span class="input-icon">▶</span><input id="video-url" type="text" autocomplete="url" placeholder="https://www.youtube.com/watch?v=..." required><button class="icon-button" type="submit" aria-label="Carregar vídeo">↗</button></div></form>
+      <div id="video-status" class="video-status" aria-live="polite">O vídeo aparecerá aqui depois de carregar.</div>
+      <div id="player-wrap" class="player-wrap hidden"><div id="player"></div></div>
+      <section id="captions-panel" class="captions-panel hidden" aria-labelledby="caption-title">
+        <div class="step-heading caption-step"><div class="step-number">2</div><div><h2 id="caption-title">Carregue as legendas</h2><p>Busque no YouTube ou importe um arquivo com tempos.</p></div></div>
+        <div class="caption-options" role="tablist" aria-label="Opções de legenda"><button class="option-tab active" id="tab-auto" type="button" role="tab" aria-selected="true" aria-controls="auto-panel"><span class="option-icon">✳</span><span><strong>Buscar automaticamente</strong><small>Legendas disponíveis no YouTube</small></span></button><button class="option-tab" id="tab-import" type="button" role="tab" aria-selected="false" aria-controls="import-panel"><span class="option-icon">↑</span><span><strong>Importar legendas</strong><small>Use um arquivo ou cole o conteúdo</small></span></button></div>
+        <div id="auto-panel" class="option-panel" role="tabpanel" aria-labelledby="tab-auto"><div class="language-grid"><div class="form-row"><label for="language">Idioma da legenda</label><select id="language"><option value="pt">Português</option><option value="pt-BR">Português (Brasil)</option><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option></select></div><div class="form-row"><label for="translation-language">Tradução opcional</label><select id="translation-language"><option value="">Sem tradução</option><option value="pt-BR">Português (Brasil)</option><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option></select></div></div><div class="auto-note">A busca depende da disponibilidade de transcrição para este vídeo e idioma.</div><button id="fetch-captions" class="button button-dark" type="button"><span>Buscar legendas</span><span>↗</span></button><p id="auto-message" class="inline-message" aria-live="polite"></p></div>
+        <div id="import-panel" class="option-panel hidden" role="tabpanel" aria-labelledby="tab-import"><label class="dropzone" id="dropzone" for="caption-file"><input id="caption-file" type="file" accept=".lrc,.srt,.vtt,text/plain,text/vtt,application/x-subrip"><span class="upload-icon">↑</span><strong>Solte seu arquivo aqui</strong><span>ou <u>escolha no dispositivo</u></span><small>Formatos .LRC, .SRT ou .VTT · UTF-8</small></label><div class="or-divider"><span>OU COLE O CONTEÚDO</span></div><label class="sr-only" for="caption-text">Conteúdo das legendas</label><textarea id="caption-text" rows="5" placeholder="Cole aqui o conteúdo de um arquivo .lrc, .srt ou .vtt"></textarea><div class="translation-row"><div><strong>Tem uma tradução?</strong><small>Opcional · associação pelo tempo mais próximo (até 1,5 s)</small></div><label class="secondary-file" for="translation-file">＋ Arquivo de tradução<input id="translation-file" type="file" accept=".lrc,.srt,.vtt,text/plain,text/vtt,application/x-subrip"></label></div><div class="import-options"><label class="check-option"><input id="clean-auto" type="checkbox"><span>Legenda automática do YouTube (limpar repetições)</span></label><label class="check-option"><input id="remove-parentheticals" type="checkbox"><span>Remover vozes de apoio entre parênteses</span></label></div><div id="import-message" class="inline-message" aria-live="polite">A legenda precisa ter marcações de tempo para sincronizar.</div><button id="prepare-import" class="button button-dark" type="button"><span>Preparar prévia</span><span>↗</span></button></div>
+        <section id="preview" class="preview hidden" aria-label="Prévia das legendas"><div class="preview-heading"><div><span class="preview-kicker">PRÉVIA DA SINCRONIZAÇÃO</span><h3><span id="line-count">0</span> linhas encontradas</h3></div><span class="preview-check">✓</span></div><div id="preview-lines" class="preview-lines"></div><div class="delay-row"><div><strong>Ajustar atraso</strong><small>Corrija a sincronia antes de começar</small></div><div class="delay-control"><button id="delay-minus" type="button" aria-label="Diminuir atraso em meio segundo">−</button><output id="delay-value">0,0 s</output><button id="delay-plus" type="button" aria-label="Aumentar atraso em meio segundo">+</button></div></div><button id="start-playback" class="button button-green" type="button" disabled><span>Começar a digitar</span><span>→</span></button></section>
+
+      </section>
+      <section id="game-panel" class="game-panel hidden" aria-label="Treino de digitação">
+        <div id="game-play" class="game-play"><div class="game-top"><div class="stats-block"><div class="progress-copy"><strong>PROGRESSO</strong><span id="progress-label">1 / 1</span></div><div class="progress-track"><span id="progress-bar"></span></div><div class="stats-row"><div><strong id="wpm-stat">0</strong><small>WPM</small></div><div><strong id="accuracy-stat">100%</strong><small>PRECISÃO</small></div></div></div><div class="game-controls"><button id="restart-game" type="button" aria-label="Reiniciar">↻</button><button id="previous-line" type="button" aria-label="Voltar uma linha">↑</button><button id="skip-line" type="button" aria-label="Pular uma linha">↓</button><button id="play-toggle" type="button" aria-label="Pausar vídeo">Ⅱ</button></div></div>
+        <details class="settings-menu"><summary>⚙ Configurações</summary><div class="settings-options"><label class="check-option"><input id="ignore-case" type="checkbox" checked><span>Ignorar maiúsculas e minúsculas</span></label><label class="check-option"><input id="ignore-accents" type="checkbox" checked><span>Ignorar acentos</span></label><label class="check-option"><input id="ignore-punctuation" type="checkbox" checked><span>Ignorar pontuação</span></label></div></details>
+        <div class="current-line-wrap"><div class="line-label">LINHA <span id="line-position">01</span></div><div id="current-line" class="current-line" aria-live="off"></div><div id="line-translation" class="line-translation hidden"></div><input id="game-input" class="game-input" type="text" placeholder="Digite aqui..." autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Digite a linha da legenda"></div>
+        <p id="game-hint" class="game-hint" aria-live="polite">Digite a linha para manter a música tocando.</p><button id="change-captions" class="change-link hidden" type="button">↻　Trocar as legendas</button></div>
+        <div id="game-result" class="game-result hidden"><span class="result-mark">✳</span><span class="preview-kicker">TREINO CONCLUÍDO</span><h2>Boa sequência.</h2><p>Você acompanhou a música até o fim.</p><div class="result-stats"><div><strong id="result-wpm">0</strong><small>WPM</small></div><div><strong id="result-accuracy">0%</strong><small>PRECISÃO</small></div><div><strong id="result-time">00:00</strong><small>TEMPO</small></div><div><strong id="result-completed">0</strong><small>LINHAS CONCLUÍDAS</small></div><div><strong id="result-skipped">0</strong><small>LINHAS PULADAS</small></div></div><button id="try-again" class="button button-green" type="button"><span>Tentar de novo</span><span>↻</span></button><button id="choose-other" class="result-link" type="button">Escolher outra música</button></div>
+      </section>
+    </section>
+    <section id="como-funciona" class="how"><span class="eyebrow">COMO FUNCIONA</span><p>Digite cada linha da legenda para manter o clipe tocando. Acerte no seu ritmo, acompanhe seu progresso e repita para ganhar velocidade.</p></section>
+  </main>
+  <footer><span>verso<span class="brand-dot">.</span></span><span>SEU RITMO. SUA PRÓXIMA TECLA.</span></footer>
+</body></html>
+
+
+
